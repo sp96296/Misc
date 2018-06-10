@@ -1,6 +1,12 @@
 
 # coding: utf-8
 
+# In[2]:
+
+
+
+# coding: utf-8
+
 # In[66]:
 
 
@@ -58,13 +64,20 @@ class Human(Animal):
             string += tempString
         return string
             
-        
 
-#########################################################################
+
+# In[5]:
+
+
 def debug():
     dictInfo = {"first": "Test1", "last": "Test2", "age": 0, "weight": 0, "height": "0'0\"", 
                 "gender": "male", "ethnicity": "ZZZ", "nationality": "Earth"}
+    dict2Info = {"first": "Test3", "last": "Test4", "age": 6, "weight": 7, "height": "1'0\"", 
+                "gender": "female", "ethnicity": "xxx", "nationality": "Mars"}
     me = Human(dictInfo)
+    me2 = Human(dict2Info)
+    print(me2)
+    print()
     print(me)
     print(Animal.count)
     print(Male.count, ",", Female.count)
