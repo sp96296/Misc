@@ -5,7 +5,7 @@ import csv
 
 OUTPUT_LANGUAGE = "en"
 OUTPUT_LANGUAGE_RANGE_LIST = list(range(65,91)) + list(range(97,123))
-FILE_OUT = "./translated.txt"
+FILE_OUT = "translated.txt"
 
 
 # rn it's formatted to work on single char words 
@@ -68,15 +68,17 @@ def translatedDictToCsv(item):
 def saveToFile(dictionary):
     print("saving to file?")
     keys = dictionary.keys()
-    file = open(FILE_OUT, "w+", encoding='utf-8')
-    data = file.readlines()
-    for key in keys:
-        print(key,end="")
-        value = dictionary[key]
-        line = "{} | {}".format(key, value)
-        data.append(line)
-    file.writelines(data)
-    file.close()
+    with open(FILE_OUT, "w+", encoding='utf-8') as file:
+        data = file.readlines()
+        print(data)
+        for key in keys:
+            print(key,end="")
+            value = dictionary[key]
+            line = "{} | {} \n".format(key, value)
+            data.append(line)
+        file.writelines(data)
+        print("\n", data)
+        file.close()
             
 def main():
     client = translate.Client()
