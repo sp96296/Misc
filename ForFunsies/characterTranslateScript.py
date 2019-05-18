@@ -5,7 +5,8 @@ import csv
 
 OUTPUT_LANGUAGE = "en"
 OUTPUT_LANGUAGE_RANGE_LIST = list(range(65,91)) + list(range(97,123))
-FILE_OUT = "translated.txt"
+FILE_OUT_TXT = "translated.txt"
+FILE_OUT_CSV = "translated.csv"
 
 
 # rn it's formatted to work on single char words 
@@ -46,7 +47,6 @@ def translateFromList(details):
             translatedDict[item] = checked
             strDetails = [item, checked]
             prettyPrint(strDetails)
-            # translatedDictToCsv(strDetails)
     return translatedDict
 
 def prettyPrint(item):
@@ -55,30 +55,37 @@ def prettyPrint(item):
     formatted = "{} | {}".format(key, value)
     print(formatted)
 
-# not sure why this isn't outputting to file
-def translatedDictToCsv(item):
-    key = item[0]
-    value = item[1]
-    with open(FILE_OUT, "a+", encoding='utf-8') as csvFile:
-        fieldnames = ["Original", "Translated by Google"]
-        writer = csv.DictWriter(csvFile, fieldnames=fieldnames)
-        csvDict = {"Original":key, "Translated by Google":value}
-        writer.writerow(csvDict)
-
 def saveToFile(dictionary):
-    print("saving to file?")
     keys = dictionary.keys()
-    with open(FILE_OUT, "w+", encoding='utf-8') as file:
+    with open(FILE_OUT_TXT, "w+", encoding='utf-8') as file:
         data = file.readlines()
-        print(data)
+        wholeFile = file.read()
         for key in keys:
-            print(key,end="")
-            value = dictionary[key]
-            line = "{} | {} \n".format(key, value)
-            data.append(line)
+            if (key not in wholeFile):
+                print(key,end="")
+                value = dictionary[key]
+                line = "{} | {} \n".format(key, value)
+                data.append(line)
         file.writelines(data)
-        print("\n", data)
         file.close()
+
+def translatedDictToCsv(dictionary):
+    with open(FILE_OUT_CSV, 'w+', newline='', encoding="utf-8") as csvFile:
+        reader = csv.DictReader(csvFile)
+        fields = ["Original","Translated"]
+        writer = csv.DictWriter(csvFile, fieldnames=fields)
+        
+        readerDict = dict(reader)
+        fileKeys = readerDict.keys()
+        inputKeys = dictionary.keys()
+
+        writer.writeheader()
+        for key in inputKeys:
+            if key not in fileKeys:
+                print(key,end="")
+                value = dictionary[key]
+                writer.writerow({"Original":key, "Translated":value})
+        csvFile.close()
             
 def main():
     client = translate.Client()
@@ -106,5 +113,7 @@ def main():
     strList = strToSingleCharacterList(characters)
     details = client, strList
     translatedDict = translateFromList(details)
-    saveToFile(translatedDict) #for some reason, it aint writing files.....
+    saveToFile(translatedDict)
+    print()
+    translatedDictToCsv(translatedDict)
 main()
