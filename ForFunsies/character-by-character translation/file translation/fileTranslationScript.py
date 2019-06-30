@@ -4,17 +4,15 @@ from google.cloud import translate
 
 
 OUTPUT_LANGUAGE = "en"
-FILE_IN_TXT = ""
+FILE_IN_TXT = input("What is the file to translate?")
 FILE_OUT_TXT = "translated.txt"
 
 print("launching")
 
 def translateItem(details):
     client, item = details
-    print("translating", item, "|", end="")
     translatedResult = client.translate(item, target_language=OUTPUT_LANGUAGE)
     translated = translatedResult["translatedText"]
-    print("result:",translated)
     return translated
 
 def translateFromList(details):
@@ -22,8 +20,8 @@ def translateFromList(details):
     translation = []
     i = 0
     for line in strList:
-        status_remainder = i%4
-        print("translating", "."*status_remainder)
+        status_remainder = i%3
+        print("translating", "."*(status_remainder+1))
         lineDetails = client, line
         translated = translateItem(lineDetails)
         translation.append(translated)
@@ -50,7 +48,6 @@ def getFile():
     return lines
 
 def main():
-    print("main")
     client = translate.Client()
     lines = getFile()
     details = client, lines
