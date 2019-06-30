@@ -4,7 +4,7 @@ from google.cloud import translate
 
 
 OUTPUT_LANGUAGE = "en"
-FILE_IN_TXT = input("file path?")
+FILE_IN_TXT = ""
 FILE_OUT_TXT = "translated.txt"
 
 print("launching")
@@ -23,13 +23,14 @@ def translateFromList(details):
         print("translating", "."*(status_remainder+1))
         lineDetails = client, line
         translated = translateItem(lineDetails)
-        saveToFile(translated)
+        saveToFile(line, translated)
         i += 1
 
-def saveToFile(line):
+def saveToFile(old, line):
     with open(FILE_OUT_TXT, "a", encoding='utf-8') as file:
-        modified = line + "\n"
-        file.write(modified)
+        for part in [old,line]:
+            modified = (part + "\n") if ("\n" not in part) else part
+            file.write(modified)
         file.close()
 
 def getFile():
