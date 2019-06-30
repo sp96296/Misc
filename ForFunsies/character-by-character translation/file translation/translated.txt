@@ -1,8 +1,0 @@
-Wang Ming: What is this?
-
-
-Li Hong: This is a book.
-Wang Ming: What is that?
-Li Hong: That is a pen.
-Wang Ming: Is that a magazine?
-Li Hong: No, that is not a magazine. That is a dictionary.
